@@ -15,8 +15,18 @@
 <link rel="icon" href="public/logohaveme.jpeg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://player.vimeo.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Caveat:wght@400..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<script>
+  /* js = contenu animable ; motion = hero cinéma ; avec-intro = rideau d'ouverture, une fois par session */
+  (function (d) {
+    d.classList.add('js');
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    d.classList.add('motion');
+    try { if (!sessionStorage.getItem('hm-intro')) d.classList.add('avec-intro'); } catch (e) {}
+  })(document.documentElement);
+</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -45,103 +55,135 @@
 </head>
 <body>
 
+<!-- ============ INTRO (posée en JS, une fois par session) ============ -->
+<div class="intro" aria-hidden="true">
+  <div class="intro__haut">
+    <span class="intro__marque">have me<i class="point"></i></span>
+    <span class="intro__lieu">paris — depuis 2017</span>
+  </div>
+  <span class="intro__compteur"><b>0</b>%</span>
+  <span class="intro__barre"><i></i></span>
+</div>
+
 <header class="header">
   <a class="header__logo" href="#haut" aria-label="have me productions — retour en haut">
-    <img src="public/logohaveme.jpeg" alt="Logo have me prod" width="52" height="52">
+    <img src="public/logohaveme.jpeg" alt="Logo have me prod" width="48" height="48">
+    <span class="header__nom">have me<b>prod</b></span>
   </a>
   <button class="burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu">
-    <span></span><span></span><span></span>
+    <span></span><span></span>
   </button>
-  <ul class="header__nav" id="menu">
-    <li><a href="#creations">Créations</a></li>
-    <li><a href="#agence">L'agence</a></li>
-    <li><a href="#references">Références</a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a class="btn" href="#devis"><span class="dot"></span>Demander un devis</a></li>
-  </ul>
+  <nav class="header__nav" id="menu" aria-label="Navigation principale">
+    <ul>
+      <li><a class="roll" href="#creations"><span data-t="Créations">Créations</span></a></li>
+      <li><a class="roll" href="#agence"><span data-t="L'agence">L'agence</span></a></li>
+      <li><a class="roll" href="#references"><span data-t="Références">Références</span></a></li>
+      <li><a class="roll" href="#services"><span data-t="Services">Services</span></a></li>
+      <li><a class="btn aimant" href="#devis"><span class="dot"></span>Demander un devis</a></li>
+    </ul>
+  </nav>
 </header>
 
 <main id="haut">
 
-  <!-- ============ 1. HERO ============ -->
+  <!-- ============ 1. HERO : le titre, puis le film qui avale l'écran ============ -->
   <section class="hero">
-    <span class="eyebrow">agence de création audiovisuelle — paris 6ᵉ</span>
-    <h1 class="titre hero__titre">
-      Des images qui
-      <span class="cercle">racontent<svg viewBox="0 0 300 110" aria-hidden="true"><path d="M18,62 C30,18 250,2 284,42 C310,74 240,104 130,102 C60,101 8,90 24,55"/></svg></span><span class="point" aria-hidden="true"></span>
-    </h1>
-    <p class="hero__sub">
-      Cinéma, séries, événements, causes engagées — depuis 2017, <strong>have me productions</strong>
-      écrit, tourne et monte des films qui font vibrer votre public.
-    </p>
-    <div class="hero__actions">
-      <button class="btn" type="button" data-video="990136377" data-titre="Showreel — Cannes 2024">
-        <svg width="12" height="14" viewBox="0 0 12 14" fill="currentColor" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>
-        Voir le showreel
-      </button>
-      <a class="btn btn--ghost" href="#devis"><span class="dot"></span>Parlons de votre projet</a>
+    <div class="hero__texte">
+      <span class="eyebrow">agence de création audiovisuelle — paris 6ᵉ</span>
+      <h1 class="titre hero__titre">
+        <span class="hero__ligne">Des images</span>
+        <span class="hero__ligne">qui <span class="nowrap"><span class="cercle">racontent<svg viewBox="0 0 300 110" preserveAspectRatio="none" aria-hidden="true"><path d="M18,62 C30,18 250,2 284,42 C310,74 240,104 130,102 C60,101 8,90 24,55"/></svg></span><span class="point" aria-hidden="true"></span></span></span>
+      </h1>
+      <div class="hero__bas">
+        <p class="hero__sub">
+          Cinéma, séries, événements, causes engagées — depuis 2017, <strong>have me productions</strong>
+          écrit, tourne et monte des films qui font vibrer votre public.
+        </p>
+        <div class="hero__actions">
+          <a class="btn aimant" href="#devis"><span class="dot"></span>Parlons de votre projet</a>
+          <span class="hero__scroll" aria-hidden="true">défiler<i></i></span>
+        </div>
+      </div>
     </div>
 
-    <div class="hero__screen">
-      <span class="annotation script" aria-hidden="true">tourné à Cannes !
-        <svg viewBox="0 0 46 34"><path d="M2,4 C18,2 34,10 40,28 M40,28 l-9,-4 M40,28 l2,-10"/></svg>
-      </span>
-      <div class="stamp" aria-hidden="true">
-        <svg viewBox="0 0 126 126">
-          <defs><path id="rond" d="M63,63 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs>
-          <circle cx="63" cy="63" r="60" fill="rgba(255,255,255,.92)"/>
-          <text><textPath href="#rond">have me prod • paris • depuis 2017 •</textPath></text>
-          <circle class="centre" cx="63" cy="63" r="7"/>
-        </svg>
-      </div>
+    <div class="hero__scene">
       <button class="screen" type="button" data-video="990136377" data-titre="Showreel — Cannes 2024" aria-label="Lire le showreel Cannes 2024 avec le son">
         <img src="assets/thumbs/990136377.jpg" alt="" fetchpriority="high">
         <span class="screen__voile" aria-hidden="true"></span>
-        <span class="screen__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3l14 9-14 9z"/></svg></span>
-        <span class="screen__badge">Showreel <b>Cannes 2024</b> — 0:50</span>
+        <span class="screen__legende" aria-hidden="true">
+          <span class="screen__mot">show</span><span class="screen__mot">reel</span>
+        </span>
+        <span class="screen__badge"><i></i>Showreel <b>Cannes 2024</b> — 0:50<span class="screen__plus"> · cliquer pour le son</span></span>
       </button>
     </div>
-
-    <div class="clients" aria-label="Ils nous font confiance">
-      <div class="clients__inner" id="marquee"></div>
-    </div>
+    <span class="annotation script" aria-hidden="true">tourné à Cannes !
+      <svg viewBox="0 0 46 34"><path d="M2,4 C18,2 34,10 40,28 M40,28 l-9,-4 M40,28 l2,-10"/></svg>
+    </span>
   </section>
 
-  <!-- ============ 2. MANIFESTE ============ -->
+  <!-- ============ 2. CLIENTS ============ -->
+  <section class="clients" aria-label="Ils nous font confiance">
+    <p class="clients__label">ils nous font confiance</p>
+    <div class="clients__piste"><div class="clients__inner" id="marquee"></div></div>
+  </section>
+
+  <!-- ============ 3. MANIFESTE ============ -->
   <section class="section manifeste" id="agence">
     <div class="section__inner">
       <span class="eyebrow">l'agence</span>
-      <p id="manifeste-texte">
+      <p class="manifeste__texte" id="manifeste-texte">
         Nous sommes une agence parisienne de création audiovisuelle.
-        Une approche <span data-rose>journalistique</span>, un regard <span data-rose>artistique</span>
-        et le sens du <span data-rose>récit</span> — de l'écriture à la diffusion,
+        Une approche <em>journalistique</em>, <span class="pastille" aria-hidden="true"><img src="assets/thumbs/1138018758.jpg" alt=""></span>
+        un regard <em>artistique</em> <span class="pastille" aria-hidden="true"><img src="assets/thumbs/1049667722.jpg" alt=""></span>
+        et le sens du <em>récit</em> <span class="pastille" aria-hidden="true"><img src="assets/thumbs/1138053459.jpg" alt=""></span> — de l'écriture à la diffusion,
         nous faisons des films qui vous ressemblent.
       </p>
+      <div class="chiffres">
+        <div class="chiffre"><b data-compte="2017">2017</b><span>année de création</span></div>
+        <div class="chiffre"><b data-compte="25">25</b><span>films en ligne</span></div>
+        <div class="chiffre"><b data-compte="24" data-suffixe="h">24h</b><span>livraison express</span></div>
+        <div class="chiffre"><b>16:9 · 9:16</b><span>livrés ensemble</span></div>
+      </div>
     </div>
   </section>
 
-  <!-- ============ 3. CRÉATIONS ============ -->
-  <section class="section creations" id="creations">
-    <div class="section__inner">
-      <span class="eyebrow">nos créations</span>
-      <h2 class="titre section__titre">Les derniers tournages<span class="point" aria-hidden="true"></span></h2>
-
-      <div class="filtres" role="group" aria-label="Filtrer les créations">
-        <button class="filtre actif" data-cat="tout">Tout</button>
-        <button class="filtre" data-cat="cinema">Cinéma &amp; Séries</button>
-        <button class="filtre" data-cat="engagement">Engagement</button>
-        <button class="filtre" data-cat="evenement">Événementiel</button>
+  <!-- ============ 4. SÉLECTION : défilement horizontal ============ -->
+  <section class="selection" id="creations" aria-label="Sélection de tournages">
+    <div class="selection__piste">
+      <div class="selection__intro">
+        <span class="eyebrow">nos créations</span>
+        <h2 class="titre selection__titre">Les derniers<br><span class="nowrap">tournages<span class="point" aria-hidden="true"></span></span></h2>
+        <p class="selection__aide">Survolez pour voir un extrait, cliquez pour le son.</p>
       </div>
+      <div class="selection__rail" id="rail"></div>
+      <a class="selection__fin" href="#catalogue">
+        <span class="titre">Tout<br>le catalogue</span>
+        <span class="selection__fleche" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
 
+  <!-- ============ 5. CATALOGUE filtrable ============ -->
+  <section class="section catalogue" id="catalogue">
+    <div class="section__inner">
+      <div class="catalogue__tete">
+        <h2 class="titre section__titre">Le <span class="nowrap">catalogue<span class="point" aria-hidden="true"></span></span></h2>
+        <div class="filtres" role="group" aria-label="Filtrer les créations">
+          <button class="filtre actif" data-cat="tout">Tout <sup>25</sup></button>
+          <button class="filtre" data-cat="cinema">Cinéma &amp; Séries <sup></sup></button>
+          <button class="filtre" data-cat="engagement">Engagement <sup></sup></button>
+          <button class="filtre" data-cat="evenement">Événementiel <sup></sup></button>
+        </div>
+      </div>
       <div class="grille" id="grille"></div>
     </div>
   </section>
 
-  <!-- ============ 4. ÉTUDES DE CAS ============ -->
+  <!-- ============ 6. ÉTUDES DE CAS : cartes empilées ============ -->
   <section class="section cas" id="references">
     <div class="section__inner">
       <span class="eyebrow">ils nous confient leurs images</span>
-      <h2 class="titre section__titre">Trois histoires qui durent<span class="point" aria-hidden="true"></span></h2>
+      <h2 class="titre section__titre">Trois histoires<br>qui <span class="nowrap">durent<span class="point" aria-hidden="true"></span></span></h2>
 
       <div class="cas__liste">
         <article class="cas__carte">
@@ -158,11 +200,11 @@
               partenaires sur toute leur communication en images.
             </p>
             <div class="cas__chiffres">
-              <div class="cas__chiffre"><b>9</b><span>films livrés</span></div>
-              <div class="cas__chiffre"><b>2</b><span>saisons de série</span></div>
-              <div class="cas__chiffre"><b>3</b><span>partenaires filmés</span></div>
+              <div class="cas__chiffre"><b data-compte="9">9</b><span>films livrés</span></div>
+              <div class="cas__chiffre"><b data-compte="2">2</b><span>saisons de série</span></div>
+              <div class="cas__chiffre"><b data-compte="3">3</b><span>partenaires filmés</span></div>
             </div>
-            <button class="cas__lien" type="button" data-video="1138053459" data-titre="HANDI'CHIENS : Chiens d'assistance en entreprises">Voir le film phare →</button>
+            <button class="cas__lien" type="button" data-video="1138053459" data-titre="HANDI'CHIENS : Chiens d'assistance en entreprises"><span>Voir le film phare</span><i aria-hidden="true">→</i></button>
           </div>
         </article>
 
@@ -180,11 +222,11 @@
               « Culte » (Prime Video) et « Factice » (Universal+) dans la conversation.
             </p>
             <div class="cas__chiffres">
-              <div class="cas__chiffre"><b>5</b><span>formats produits</span></div>
-              <div class="cas__chiffre"><b>2</b><span>plateformes</span></div>
+              <div class="cas__chiffre"><b data-compte="5">5</b><span>formats produits</span></div>
+              <div class="cas__chiffre"><b data-compte="2">2</b><span>plateformes</span></div>
               <div class="cas__chiffre"><b>9:16</b><span>pensé social</span></div>
             </div>
-            <button class="cas__lien" type="button" data-video="1138025530" data-titre="CARTEL - Festival Séries Mania">Voir l'aftermovie Séries Mania →</button>
+            <button class="cas__lien" type="button" data-video="1138025530" data-titre="CARTEL - Festival Séries Mania"><span>Voir l'aftermovie Séries Mania</span><i aria-hidden="true">→</i></button>
           </div>
         </article>
 
@@ -202,121 +244,95 @@
               événements cinéma pour les marques qui les font vivre.
             </p>
             <div class="cas__chiffres">
-              <div class="cas__chiffre"><b>6</b><span>événements couverts</span></div>
-              <div class="cas__chiffre"><b>24h</b><span>livraison express</span></div>
-              <div class="cas__chiffre"><b>100%</b><span>émotion vraie</span></div>
+              <div class="cas__chiffre"><b data-compte="6">6</b><span>événements couverts</span></div>
+              <div class="cas__chiffre"><b data-compte="24" data-suffixe="h">24h</b><span>livraison express</span></div>
+              <div class="cas__chiffre"><b data-compte="100" data-suffixe="%">100%</b><span>émotion vraie</span></div>
             </div>
-            <button class="cas__lien" type="button" data-video="1138018758" data-titre="AlloCiné : cap sur la Soirée du Jeudi à Deauville !">Voir le reportage Deauville →</button>
+            <button class="cas__lien" type="button" data-video="1138018758" data-titre="AlloCiné : cap sur la Soirée du Jeudi à Deauville !"><span>Voir le reportage Deauville</span><i aria-hidden="true">→</i></button>
           </div>
         </article>
       </div>
     </div>
   </section>
 
-  <!-- ============ 5. SERVICES ============ -->
+  <!-- ============ 7. SERVICES : liste éditoriale + image qui suit le curseur ============ -->
   <section class="section services" id="services">
     <div class="section__inner">
       <span class="eyebrow">de l'écriture à la diffusion</span>
-      <h2 class="titre section__titre">Ce qu'on sait faire<span class="point" aria-hidden="true"></span></h2>
+      <h2 class="titre section__titre">Ce qu'on<br>sait <span class="nowrap">faire<span class="point" aria-hidden="true"></span></span></h2>
 
-      <div class="services__grille">
-        <div class="service">
-          <span class="service__icone" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/><path d="M18 10l4-2v8l-4-2"/></svg></span>
-          <h3>Cinéma &amp; Promotion</h3>
-          <ul>
-            <li>Interview &amp; plateau</li>
-            <li>Making-of de tournage</li>
-            <li>Sortie de salle, micro-trottoir</li>
-            <li>Aftermovie de festival</li>
-          </ul>
-        </div>
-        <div class="service">
-          <span class="service__icone" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/></svg></span>
-          <h3>Entreprises &amp; Institutions</h3>
-          <ul>
-            <li>Film institutionnel</li>
-            <li>Vidéo testimoniale</li>
-            <li>Reportage métier</li>
-            <li>Communication interne</li>
-          </ul>
-        </div>
-        <div class="service">
-          <span class="service__icone" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2v4M4.9 4.9l2.8 2.8M2 12h4M19.1 4.9l-2.8 2.8M22 12h-4M12 22v-4M7 22a5 5 0 0 1 10 0"/></svg></span>
-          <h3>Événements</h3>
-          <ul>
-            <li>Captation multicam</li>
-            <li>Aftermovie &amp; teaser</li>
-            <li>Timelapse</li>
-            <li>Livraison express 24h</li>
-          </ul>
-        </div>
-        <div class="service">
-          <span class="service__icone" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z"/></svg></span>
-          <h3>Créations</h3>
-          <ul>
-            <li>Clip musical</li>
-            <li>Formats 9:16 réseaux sociaux</li>
-            <li>Shooting photo</li>
-            <li>Direction artistique</li>
-          </ul>
-        </div>
-      </div>
+      <ol class="services__liste">
+        <li class="service" data-image="assets/thumbs/1049667722.jpg">
+          <span class="service__num">01</span>
+          <h3 class="titre service__nom">Cinéma &amp; Promotion</h3>
+          <p class="service__detail">Interview &amp; plateau · Making-of · Sortie de salle, micro-trottoir · Aftermovie de festival</p>
+        </li>
+        <li class="service" data-image="assets/thumbs/1138053459.jpg">
+          <span class="service__num">02</span>
+          <h3 class="titre service__nom">Entreprises &amp; Institutions</h3>
+          <p class="service__detail">Film institutionnel · Vidéo testimoniale · Reportage métier · Communication interne</p>
+        </li>
+        <li class="service" data-image="assets/thumbs/1138021515.jpg">
+          <span class="service__num">03</span>
+          <h3 class="titre service__nom">Événements</h3>
+          <p class="service__detail">Captation multicam · Aftermovie &amp; teaser · Timelapse · Livraison express 24h</p>
+        </li>
+        <li class="service" data-image="assets/thumbs/1049672608.jpg">
+          <span class="service__num">04</span>
+          <h3 class="titre service__nom">Créations</h3>
+          <p class="service__detail">Clip musical · Formats 9:16 réseaux sociaux · Shooting photo · Direction artistique</p>
+        </li>
+      </ol>
     </div>
+    <div class="services__flottant" aria-hidden="true"><div class="services__images"></div></div>
   </section>
 
-  <!-- ============ 6. PROCESS ============ -->
+  <!-- ============ 8. PROCESS : grand numéro collant ============ -->
   <section class="section process">
-    <div class="section__inner">
-      <span class="eyebrow">notre façon de faire</span>
-      <h2 class="titre section__titre">Un film en quatre temps<span class="point" aria-hidden="true"></span></h2>
-
-      <div class="process__liste">
+    <div class="section__inner process__inner">
+      <div class="process__gauche">
+        <span class="eyebrow">notre façon de faire</span>
+        <h2 class="titre section__titre">Un film en<br>quatre <span class="nowrap">temps<span class="point" aria-hidden="true"></span></span></h2>
+        <div class="process__compteur" aria-hidden="true">
+          <span class="process__chiffres"><b>01</b><b>02</b><b>03</b><b>04</b></span>
+          <span class="process__total">/04</span>
+        </div>
         <div class="process__ligne" aria-hidden="true"><i id="ligne-progression"></i></div>
+      </div>
+      <div class="process__etapes">
         <div class="etape">
-          <span class="etape__rond" aria-hidden="true">1</span>
-          <div>
-            <h3>Scénarisation</h3>
-            <p>On écoute, on questionne, on écrit. Chaque projet démarre par une intention claire :
-            qu'est-ce qu'on raconte, à qui, et pourquoi maintenant ? <span class="script">c'est là que tout se joue !</span></p>
-          </div>
+          <h3 class="titre">Scénarisation</h3>
+          <p>On écoute, on questionne, on écrit. Chaque projet démarre par une intention claire :
+          qu'est-ce qu'on raconte, à qui, et pourquoi maintenant ? <span class="script">c'est là que tout se joue !</span></p>
         </div>
         <div class="etape">
-          <span class="etape__rond" aria-hidden="true">2</span>
-          <div>
-            <h3>Réalisation</h3>
-            <p>Tournage léger ou dispositif multicam, en studio ou en plein festival :
-            nos équipes s'adaptent au terrain sans jamais sacrifier l'image.</p>
-          </div>
+          <h3 class="titre">Réalisation</h3>
+          <p>Tournage léger ou dispositif multicam, en studio ou en plein festival :
+          nos équipes s'adaptent au terrain sans jamais sacrifier l'image.</p>
         </div>
         <div class="etape">
-          <span class="etape__rond" aria-hidden="true">3</span>
-          <div>
-            <h3>Post-production</h3>
-            <p>Montage, étalonnage, mixage, habillage : on sculpte la matière jusqu'à ce que
-            le film ait le rythme juste. Versions 16:9 et 9:16 livrées ensemble.</p>
-          </div>
+          <h3 class="titre">Post-production</h3>
+          <p>Montage, étalonnage, mixage, habillage : on sculpte la matière jusqu'à ce que
+          le film ait le rythme juste. Versions 16:9 et 9:16 livrées ensemble.</p>
         </div>
         <div class="etape">
-          <span class="etape__rond" aria-hidden="true">4</span>
-          <div>
-            <h3>Diffusion</h3>
-            <p>Exports optimisés pour chaque plateforme, sous-titrage, accompagnement à la mise
-            en ligne — votre film arrive à destination, pas seulement sur un disque dur.</p>
-          </div>
+          <h3 class="titre">Diffusion</h3>
+          <p>Exports optimisés pour chaque plateforme, sous-titrage, accompagnement à la mise
+          en ligne — votre film arrive à destination, pas seulement sur un disque dur.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ 7. DEVIS ============ -->
+  <!-- ============ 9. DEVIS ============ -->
   <section class="section devis" id="devis">
     <div class="devis__fond" data-fond="1138025530" aria-hidden="true"></div>
     <div class="devis__voile" aria-hidden="true"></div>
     <div class="section__inner">
+      <h2 class="titre devis__geant">Un projet<br>en images&nbsp;?</h2>
       <div class="devis__inner">
         <div>
           <span class="eyebrow">parlons de votre projet</span>
-          <h2 class="titre section__titre">Un projet en images ?<span class="point" aria-hidden="true"></span></h2>
           <p class="devis__intro">
             Racontez-nous votre idée en deux minutes. On vous rappelle sous 48h
             avec une première approche et une fourchette budgétaire.
@@ -330,19 +346,18 @@
 
         <form class="form" id="form-devis" novalidate>
           <div class="champ">
+            <input id="f-nom" name="nom" type="text" required autocomplete="name" placeholder=" ">
             <label for="f-nom">Nom *</label>
-            <input id="f-nom" name="nom" type="text" required autocomplete="name" placeholder="Votre nom">
           </div>
           <div class="champ">
+            <input id="f-email" name="email" type="email" required autocomplete="email" placeholder=" ">
             <label for="f-email">Email *</label>
-            <input id="f-email" name="email" type="email" required autocomplete="email" placeholder="vous@exemple.com">
           </div>
           <div class="champ">
+            <input id="f-tel" name="telephone" type="tel" autocomplete="tel" placeholder=" ">
             <label for="f-tel">Téléphone</label>
-            <input id="f-tel" name="telephone" type="tel" autocomplete="tel" placeholder="06 ...">
           </div>
-          <div class="champ">
-            <label for="f-type">Type de projet *</label>
+          <div class="champ champ--select">
             <select id="f-type" name="type" required>
               <option value="">Choisir…</option>
               <option>Film institutionnel</option>
@@ -352,9 +367,9 @@
               <option>Clip / création</option>
               <option>Autre</option>
             </select>
+            <label for="f-type">Type de projet *</label>
           </div>
-          <div class="champ">
-            <label for="f-budget">Budget indicatif</label>
+          <div class="champ champ--select">
             <select id="f-budget" name="budget">
               <option value="">À définir ensemble</option>
               <option>Moins de 3 000 €</option>
@@ -362,21 +377,22 @@
               <option>8 000 – 20 000 €</option>
               <option>Plus de 20 000 €</option>
             </select>
+            <label for="f-budget">Budget indicatif</label>
           </div>
-          <div class="champ">
-            <label for="f-echeance">Échéance</label>
+          <div class="champ champ--select">
             <select id="f-echeance" name="echeance">
               <option value="">Pas encore fixée</option>
               <option>Moins d'un mois</option>
               <option>1 à 3 mois</option>
               <option>Plus de 3 mois</option>
             </select>
+            <label for="f-echeance">Échéance</label>
           </div>
           <div class="champ plein">
+            <textarea id="f-message" name="message" required placeholder=" "></textarea>
             <label for="f-message">Votre projet *</label>
-            <textarea id="f-message" name="message" required placeholder="L'idée, le contexte, la date si vous l'avez déjà…"></textarea>
           </div>
-          <button class="btn" type="submit"><span class="dot"></span>Envoyer ma demande</button>
+          <button class="btn btn--rose aimant" type="submit"><span class="dot"></span>Envoyer ma demande</button>
           <p class="form__note">* champs requis — vos informations ne servent qu'à vous répondre.</p>
         </form>
       </div>
@@ -385,18 +401,26 @@
 
 </main>
 
-<!-- ============ FOOTER ============ -->
-<footer class="footer">
-  <div class="footer__inner">
-    <span>© 2026 have me productions<span class="dot"></span>créateur de contenus audiovisuels</span>
-    <ul class="footer__socials">
-      <li><a href="https://www.facebook.com/havemeprod/" target="_blank" rel="noopener">Facebook</a></li>
-      <li><a href="https://www.instagram.com/have_me_productions/" target="_blank" rel="noopener">Instagram</a></li>
-      <li><a href="https://www.linkedin.com/company/have-me-productions/" target="_blank" rel="noopener">LinkedIn</a></li>
-      <li><a href="https://vimeo.com/haveme" target="_blank" rel="noopener">Vimeo</a></li>
-    </ul>
-  </div>
-</footer>
+<!-- ============ FOOTER : révélé sous la page (rideau) ============ -->
+<div class="footer-rideau">
+  <footer class="footer">
+    <div class="footer__haut">
+      <a class="footer__mail" href="mailto:sarah.vettes@have-me.com">sarah.vettes@have-me.com</a>
+      <ul class="footer__socials">
+        <li><a class="roll" href="https://www.facebook.com/havemeprod/" target="_blank" rel="noopener"><span data-t="Facebook">Facebook</span></a></li>
+        <li><a class="roll" href="https://www.instagram.com/have_me_productions/" target="_blank" rel="noopener"><span data-t="Instagram">Instagram</span></a></li>
+        <li><a class="roll" href="https://www.linkedin.com/company/have-me-productions/" target="_blank" rel="noopener"><span data-t="LinkedIn">LinkedIn</span></a></li>
+        <li><a class="roll" href="https://vimeo.com/haveme" target="_blank" rel="noopener"><span data-t="Vimeo">Vimeo</span></a></li>
+      </ul>
+    </div>
+    <p class="footer__marque titre" aria-hidden="true">have me<span class="point"></span></p>
+    <div class="footer__bas">
+      <span>© 2026 have me productions<span class="dot"></span>créateur de contenus audiovisuels</span>
+      <span>28 rue Saint-André des Arts, Paris 6ᵉ</span>
+      <a href="#haut" class="footer__haut-lien">Retour en haut ↑</a>
+    </div>
+  </footer>
+</div>
 
 <!-- ============ LIGHTBOX ============ -->
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Lecteur vidéo">
@@ -406,8 +430,11 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
