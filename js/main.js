@@ -678,8 +678,9 @@
     casCartes.forEach((c, i) => {
       const suivante = casCartes[i + 1];
       if (suivante) {
-        gsap.to(c, {
-          scale: .9 + i * .02, filter: 'brightness(.55)', ease: 'none',
+        /* départ explicite : depuis « filter: none », GSAP partait de brightness(0) et la carte visible était noire */
+        gsap.fromTo(c, { scale: 1, filter: 'brightness(1)' }, {
+          scale: .9 + i * .02, filter: 'brightness(.55)', ease: 'none', immediateRender: false,
           scrollTrigger: { trigger: suivante, start: 'top bottom', end: 'top ' + (96 + (i + 1) * 22) + 'px', scrub: true }
         });
       }

@@ -270,8 +270,9 @@ button{font:inherit;color:inherit}
   display:flex;align-items:center;gap:clamp(24px,3vw,48px);
   height:100vh;height:100svh;padding:90px var(--gouttiere) 40px;width:max-content;
 }
-.selection__intro{width:min(34vw,460px);flex:none}
-.selection__titre{font-size:clamp(2.6rem,6vw,6rem);margin-top:10px}
+.selection__intro{width:min(40vw,560px);flex:none}
+/* « tournages. » fait 8,35 em de large : la taille suit la colonne pour qu'il tienne */
+.selection__titre{font-size:min(4.6vw,4.1rem);margin-top:10px}
 .selection__aide{margin-top:22px;color:var(--gris);max-width:28ch}
 .selection__rail{display:flex;gap:clamp(24px,3vw,48px);align-items:center;will-change:transform}
 .une{
@@ -644,6 +645,7 @@ button{font:inherit;color:inherit}
   .selection{overflow:visible}
   .selection__piste{height:auto;width:auto;flex-direction:column;align-items:stretch;padding:90px 0 60px}
   .selection__intro{width:auto;padding:0 var(--gouttiere)}
+  .selection__titre{font-size:clamp(2rem,10.4vw,3.4rem)}
   .selection__rail{overflow-x:auto;scroll-snap-type:x mandatory;padding:0 var(--gouttiere) 10px;scrollbar-width:none}
   .selection__rail::-webkit-scrollbar{display:none}
   .selection__rail{align-items:flex-start}
