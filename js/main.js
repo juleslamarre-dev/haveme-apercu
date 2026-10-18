@@ -182,7 +182,7 @@
     cadre.classList.toggle('verticale', !!vertical);
     lbTitre.textContent = titre || '';
     iframe = document.createElement('iframe');
-    iframe.src = 'https://player.vimeo.com/video/' + id + '?autoplay=1&title=0&byline=0&portrait=0';
+    iframe.src = 'https://player.vimeo.com/video/' + id + '?autoplay=1&title=0&byline=0&portrait=0&dnt=1';
     iframe.allow = 'autoplay; fullscreen; picture-in-picture';
     iframe.title = titre || 'Vidéo have me productions';
     cadre.appendChild(iframe);
@@ -275,7 +275,7 @@
 
   function videoFond(id, quandJoue) {
     const f = document.createElement('iframe');
-    f.src = VIMEO + '/video/' + id + '?background=1&autoplay=1&loop=1&muted=1&api=1';
+    f.src = VIMEO + '/video/' + id + '?background=1&autoplay=1&loop=1&muted=1&api=1&dnt=1';
     f.allow = 'autoplay';
     f.setAttribute('aria-hidden', 'true');
     f.tabIndex = -1;
@@ -513,12 +513,13 @@
       gsap.timeline({
         onComplete: () => { el.remove(); root.classList.remove('avec-intro'); bloquerScroll(false); }
       })
-        .from('.intro__haut > *', { yPercent: 100, opacity: 0, duration: .8, stagger: .1, ease: 'expo.out' })
-        .to(o, { v: 100, duration: 1.7, ease: 'power3.inOut',
-                 onUpdate: () => { n.textContent = Math.round(o.v); } }, 0.1)
-        .to('.intro__barre i', { scaleX: 1, duration: 1.7, ease: 'power3.inOut' }, 0.1)
-        .to('.intro__compteur, .intro__haut', { yPercent: -60, opacity: 0, duration: .7, ease: 'expo.in' }, '+=.1')
-        .to(el, { clipPath: 'inset(0 0 100% 0)', duration: 1.1, ease: 'expo.inOut', onStart: fini }, '-=.25');
+        /* court exprès : le rideau retarde l'affichage du hero (LCP mobile), viser ~1,2 s avant la levée */
+        .from('.intro__haut > *', { yPercent: 100, opacity: 0, duration: .5, stagger: .08, ease: 'expo.out' })
+        .to(o, { v: 100, duration: .9, ease: 'power3.inOut',
+                 onUpdate: () => { n.textContent = Math.round(o.v); } }, 0.05)
+        .to('.intro__barre i', { scaleX: 1, duration: .9, ease: 'power3.inOut' }, 0.05)
+        .to('.intro__compteur, .intro__haut', { yPercent: -60, opacity: 0, duration: .45, ease: 'expo.in' }, '+=.05')
+        .to(el, { clipPath: 'inset(0 0 100% 0)', duration: .9, ease: 'expo.inOut', onStart: fini }, '-=.2');
     });
   }
 
@@ -533,12 +534,15 @@
   gsap.set('.annotation', { opacity: 0 });
 
   function entreeHero() {
+    /* les lignes masquent les lettres qui montent ; le cercle déborde de la ligne,
+       donc on ne le trace qu'une fois le masque retiré (dernière lettre à ~97 %) */
+    const finMasque = .05 + (splitHero.chars.length - 1) * .028 + .65;
     gsap.timeline({ defaults: { ease: 'expo.out' } })
       .to('.hero .eyebrow', { opacity: 1, y: 0, duration: 1 }, 0)
       .to(splitHero.chars, { yPercent: 0, duration: 1.3, stagger: .028 }, .05)
-      .set(lignesHero, { overflow: 'visible' })
+      .set(lignesHero, { overflow: 'visible' }, finMasque)
       .fromTo('.hero__titre .cercle path', { strokeDashoffset: 3000 },
-        { strokeDashoffset: 0, duration: 1.2, ease: 'power2.out' }, .9)
+        { strokeDashoffset: 0, duration: 1.2, ease: 'power2.out' }, finMasque)
       .to('.hero__bas > *', { opacity: 1, y: 0, duration: 1, stagger: .1 }, .6)
       .to('.hero__scene', { y: 0, duration: 1.5, ease: 'expo.inOut', clearProps: 'transform' }, .3)
       .to('.screen img', { scale: 1.25, duration: 2, ease: 'expo.out', clearProps: 'transform' }, .5)
