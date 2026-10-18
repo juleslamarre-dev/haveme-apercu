@@ -121,7 +121,7 @@
   function limiter() {
     const visibles = cartes.filter((c) => !c.classList.contains('cachee'));
     cartes.forEach((c) => c.classList.toggle('au-dela', visibles.indexOf(c) >= 6));
-    plus.querySelector('b').textContent = visibles.length;
+    plus.querySelector('b').textContent = visibles.length - 6;
     plus.hidden = grille.classList.contains('ouverte') || visibles.length <= 6;
   }
   limiter();
