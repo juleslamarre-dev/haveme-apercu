@@ -253,7 +253,7 @@
     e.preventDefault();
     if (!form.reportValidity()) return;
     const d = new FormData(form);
-    const sujet = 'Demande de devis — ' + (d.get('type') || 'projet vidéo');
+    const sujet = 'Demande de devis : ' + (d.get('type') || 'projet vidéo');
     const corps =
       'Nom : ' + d.get('nom') + '\n' +
       'Email : ' + d.get('email') + '\n' +
