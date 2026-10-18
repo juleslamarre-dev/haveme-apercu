@@ -67,6 +67,8 @@
   const motion = !reduit && !!(window.gsap && window.ScrollTrigger && window.SplitText && window.Flip);
   if (!motion) root.classList.remove('motion', 'avec-intro');
 
+  /* guillemets français collés à leur mot (espace insécable) */
+  const insecables = (t) => t.replace(/« /g, '«\u00a0').replace(/ »/g, '\u00a0»');
   const fmtDuree = (s) => Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
   const parId = Object.fromEntries(VIDEOS.map((v) => [v.id, v]));
 
@@ -86,7 +88,7 @@
         '<span class="une__num">' + String(i + 1).padStart(2, '0') + '</span>' +
         '<span class="une__duree">' + fmtDuree(v.duree) + '</span>' +
       '</span>' +
-      '<span class="une__titre">' + v.titre + '</span>' +
+      '<span class="une__titre">' + insecables(v.titre) + '</span>' +
       '<span class="une__meta"><b>' + NOMS_CAT[v.cat] + '</b> · ' + v.type + '</span>';
     rail.appendChild(b);
   });
@@ -108,11 +110,26 @@
         (v.vertical ? '<span class="carte__format">9:16</span>' : '') +
         '<span class="carte__duree">' + fmtDuree(v.duree) + '</span>' +
       '</span>' +
-      '<span class="carte__titre">' + v.titre + '</span>' +
+      '<span class="carte__titre">' + insecables(v.titre) + '</span>' +
       '<span class="carte__meta"><b>' + NOMS_CAT[v.cat] + '</b> · ' + v.type + '</span>';
     grille.appendChild(carte);
   });
   const cartes = Array.from(grille.children);
+
+  /* ============ mobile : 6 films visibles, le reste derrière un bouton (CSS ≤ 600 px) ============ */
+  const plus = document.getElementById('catalogue-plus');
+  function limiter() {
+    const visibles = cartes.filter((c) => !c.classList.contains('cachee'));
+    cartes.forEach((c) => c.classList.toggle('au-dela', visibles.indexOf(c) >= 6));
+    plus.querySelector('b').textContent = visibles.length;
+    plus.hidden = grille.classList.contains('ouverte') || visibles.length <= 6;
+  }
+  limiter();
+  plus.addEventListener('click', () => {
+    grille.classList.add('ouverte');
+    plus.hidden = true;
+    if (window.ScrollTrigger) ScrollTrigger.refresh();
+  });
 
   /* ============ filtres (+ compteurs) — animés avec Flip si dispo ============ */
   const filtres = document.querySelectorAll('.filtre');
@@ -122,8 +139,11 @@
       cat === 'tout' ? VIDEOS.length : VIDEOS.filter((v) => v.cat === cat).length;
     f.addEventListener('click', () => {
       filtres.forEach((x) => x.classList.toggle('actif', x === f));
-      const appliquer = () => cartes.forEach((c) =>
-        c.classList.toggle('cachee', cat !== 'tout' && c.dataset.cat !== cat));
+      grille.classList.remove('ouverte');
+      const appliquer = () => {
+        cartes.forEach((c) => c.classList.toggle('cachee', cat !== 'tout' && c.dataset.cat !== cat));
+        limiter();
+      };
       if (!motion) { appliquer(); return; }
       const etat = Flip.getState(cartes);
       appliquer();

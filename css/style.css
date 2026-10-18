@@ -327,6 +327,7 @@ button{font:inherit;color:inherit}
 .filtre.actif sup{color:var(--rose);opacity:1}
 .grille{display:grid;grid-template-columns:repeat(3,1fr);gap:44px 28px}
 .carte{display:block;background:none;border:none;padding:0;cursor:pointer;text-align:left;perspective:900px}
+.catalogue__plus,.catalogue__plus[hidden]{display:none}
 .carte.cachee{display:none}
 .carte__media{
   display:block;position:relative;border-radius:var(--rayon);overflow:hidden;aspect-ratio:16/9;
@@ -665,7 +666,12 @@ button{font:inherit;color:inherit}
   .js .etape{opacity:1}
 }
 @media (max-width:600px){
-  .grille{grid-template-columns:1fr}
+  /* catalogue mobile : 2 colonnes et 6 films, le reste derrière « Voir les N films » */
+  .grille{grid-template-columns:repeat(2,1fr);gap:26px 12px}
+  .carte__titre{font-size:.86rem;margin-top:10px}
+  .carte__meta{font-size:.6rem}
+  .grille:not(.ouverte) .carte.au-dela{display:none}
+  .catalogue__plus{display:inline-flex;margin-top:34px}
   .form{grid-template-columns:1fr}
   .chiffres{grid-template-columns:1fr 1fr}
   .service{grid-template-columns:1fr;gap:6px}
